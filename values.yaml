@@ -1,0 +1,53 @@
+# replicaCount is 1 as given
+#
+#images are 
+# shreybatra/sample-frontend
+# shreybatra/sample-backend
+# redis Official image
+
+# Environment Variable:
+# For Backend image - `REDIS_URI` as redis://redis-svc:6379
+# For Frontend image - `BACKEND_URL` as http://backend-svc:8000
+
+#Frontend service
+#Type - NodePort
+#Name - frontend-svc
+#Port - 5173
+#NodePort - 31000
+
+#Backend service
+#Type - ClusterIP
+#Name - backend-svc
+#Port - 8000
+
+#Redis service
+#Type - ClusterIP
+#Name - redis-svc
+#Port - 6379
+
+frontend:
+  image: shreybatra/sample-frontend
+  replicaCount: 1
+  service:
+    type: NodePort
+    port: 5175
+    nodePort: 31000
+  env:
+    BACKEND_URL: http://backend-svc:8000
+
+backend:
+  image: shreybatra/sample-backend
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 8000
+  env:
+    REDIS_URI: redis://redis-svc:6379
+
+redis:
+  image: redis
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 6379
+

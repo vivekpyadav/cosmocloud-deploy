@@ -1,0 +1,121 @@
+---
+# Source: cosmocloud-deploy/templates/backend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+# Source: cosmocloud-deploy/templates/frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - port: 5175
+    targetPort: 5175
+    nodePort: 31000
+---
+# Source: cosmocloud-deploy/templates/redis-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-svc
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+---
+# Source: cosmocloud-deploy/templates/backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: shreybatra/sample-backend
+        env:
+        - name: REDIS_URI
+          value: redis://redis-svc:6379
+        ports:
+        - containerPort: 8000
+---
+# Source: cosmocloud-deploy/templates/frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: default
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: shreybatra/sample-frontend
+        env:
+        - name: BACKEND_URL
+          value: http://backend-svc:8000
+        ports:
+        - containerPort: 5175
+---
+# Source: cosmocloud-deploy/templates/redis_deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: default
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+        - containerPort: 6379
