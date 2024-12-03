@@ -11,7 +11,7 @@ This chart deploy application with much ease.
 
 # Chart Functionality
 
-The cosmocloud-deploy Helm chart have:
+### The cosmocloud-deploy Helm chart have:
 
 ## Backend Service:
 - Deploys the backend of application from the shreybatra/sample-backend image.
@@ -42,7 +42,7 @@ kubectl get nodes
 ```
 Deploy the Chart Install the Helm chart:
 ```bash
-helm install <any name> cosmocloud-deploy --atomic --timeout 30s
+helm install testapp cosmocloud-deploy --atomic --timeout 30s
 ```
 Verify Deployment Check that the pods and services are running:
 ```bash
