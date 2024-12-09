@@ -39,14 +39,13 @@ Change directory:
 ```bash
 cd cosmocloud_deploy
 ```
-
-Verify Kubernetes Cluster Ensure your Kubernetes cluster is running and configured:
-```bash
-kubectl get nodes
-```
 Deploy the Chart Install the Helm chart:
 ```bash
 helm install testapp cosmocloud-deploy --atomic --timeout 30s
+```
+Verify Kubernetes Cluster Ensure your Kubernetes cluster is running and configured:
+```bash
+kubectl get nodes
 ```
 Verify Deployment Check that the pods and services are running:
 ```bash
