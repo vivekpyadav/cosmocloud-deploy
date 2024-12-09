@@ -35,6 +35,10 @@ This chart deploy application with much ease.
 ```bash
 git clone https://github.com/vivekpyadav/cosmocloud-deploy.git
 ```
+Change directory:
+```bash
+cd cosmocloud_deploy
+```
 
 Verify Kubernetes Cluster Ensure your Kubernetes cluster is running and configured:
 ```bash
